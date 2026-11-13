@@ -5,7 +5,8 @@
 </p>
 
 Roclet turns an Android phone into a wireless microphone for a
-[Roc Toolkit](https://roc-streaming.org) receiver over Wi-Fi.
+[Roc Toolkit](https://roc-streaming.org) receiver over Wi-Fi, or into a
+wireless speaker for a Roc sender running on a PC.
 
 [Source](https://github.com/Speyll/Roclet) · [Issues](https://github.com/Speyll/Roclet/issues) · [Releases](https://github.com/Speyll/Roclet/releases)
 
@@ -19,38 +20,86 @@ Roclet turns an Android phone into a wireless microphone for a
 
 ## How it works
 
-Roclet sends the phone's microphone as a Roc `rtp+rs8m` source stream, with a
-separate `rs8m` repair stream. On the receiver it appears as a normal audio
-source. The default ports are `10001` for source and `10002` for repair.
+Roclet has two modes, selected with the tabs at the top of the screen:
+
+- **Microphone** sends the phone's microphone as a Roc `rtp+rs8m` source
+  stream, with a separate `rs8m` repair stream. On the receiver it appears as a
+  normal audio source. The default ports are `10001` for source and `10002` for
+  repair.
+- **Speaker** receives a Roc `rtp+rs8m` source stream from a PC and plays it
+  through the phone's speaker or headphones. It listens on the local ports
+  `10001` (source) and `10002` (repair) by default. The sender must use RS8M
+  FEC. The app shows the phone's Wi-Fi address so the PC can target it.
+
+Only the service for the selected mode runs at a time.
 
 ## Requirements
 
 - Android 10 (API 29) or newer on an `arm64-v8a` device.
-- A Wi-Fi network shared with the receiver.
-- A Roc Toolkit receiver, such as `roc-recv` or the PipeWire/PulseAudio Roc
-  module.
+- A Wi-Fi network shared with the other device.
+- For **Microphone** mode, a Roc Toolkit receiver, such as `roc-recv` or the
+  PipeWire/PulseAudio Roc module.
+- For **Speaker** mode on Linux, PipeWire with the ROC sink module
+  (`libpipewire-module-roc-sink`, packaged as `pipewire-roc` or similar by
+  most distributions).
 
 ## Setup
 
-Start the receiver on the same network, then install Roclet from the
-[releases page](https://github.com/Speyll/Roclet/releases). Open the app, enter
-the receiver's address and ports, and tap the microphone button. Release builds
-are signed; uninstall a debug build before installing a release build.
+Install Roclet from the
+[releases page](https://github.com/Speyll/Roclet/releases), open the app, and
+choose a mode. Release builds are signed; uninstall a debug build before
+installing a release build.
 
-See the [Roc Toolkit documentation](https://roc-streaming.org/toolkit/docs/)
-for receiver installation and usage.
+For **Microphone** mode, start the receiver on the same network, enter its
+address and ports, and tap the microphone button. See the
+[Roc Toolkit documentation](https://roc-streaming.org/toolkit/docs/) for
+receiver installation and usage.
+
+For **Speaker** mode, start listening in the app, then configure the PC as a
+Roc sender. Do not select both modes at once: the phone cannot send and receive
+with the same ports.
+
+### PipeWire sender (Linux)
+
+Create a drop-in configuration, replacing `PHONE_IP` with the address shown in
+the app:
+
+```ini
+# ~/.config/pipewire/pipewire.conf.d/roc-sink.conf
+context.modules = [
+    { name = libpipewire-module-roc-sink
+      args = {
+          remote.ip = "PHONE_IP"
+          remote.source.port = 10001
+          remote.repair.port = 10002
+          fec.code = rs8m
+      }
+    }
+]
+```
+
+Restart the user PipeWire services, then choose the new ROC output device:
+
+```sh
+systemctl --user restart pipewire pipewire-pulse
+```
+
+The ROC sink appears as an audio output. Select it in the system mixer and play
+audio. The receiver targets roughly 120 ms of latency; it adapts to network
+jitter but cannot go below the sender's packet and FEC buffering.
 
 ## Usage
 
-- Use the settings button to change the receiver address and source/repair
-  ports. They are remembered between launches. The same panel links to the
-  third-party notices.
-- Tap the microphone button to start streaming. Allow microphone access when
-  asked; on Android 13 and newer, allow notifications so the foreground
-  notification can appear.
-- The status line shows *Starting*, *Streaming*, or *Stopped*. Tap the button
-  again, or use **Stop** in the notification, to stop.
-- Streaming continues while the screen is off or the app is in the background.
+- Use the settings button to change the address and source/repair ports. They
+  are remembered per mode. The same panel links to the third-party notices.
+- Tap the microphone button to start streaming or listening. In Microphone mode,
+  allow microphone access when asked. On Android 13 and newer, allow
+  notifications so the foreground notification can appear.
+- The status line shows *Starting*, *Streaming*/*Listening*, *Paused*, or
+  *Stopped*. Tap the button again, or use **Stop** in the notification, to stop.
+- Streaming and playback continue while the screen is off or the app is in the
+  background. Speaker mode pauses on transient audio-focus loss and stops when
+  another app takes audio output permanently.
 
 ## Building
 
@@ -75,8 +124,8 @@ present; otherwise they produce an unsigned APK. See
 
 ## Privacy
 
-Roclet sends audio only to the receiver you configure. It has no analytics,
-ads, telemetry, accounts, or cloud service, and stores only the destination IP
+Roclet sends or receives audio only with the peer you configure. It has no
+analytics, ads, telemetry, accounts, or cloud service, and stores only the
 address and ports on the device.
 
 ## Contributing

@@ -31,6 +31,44 @@
             android:stateListAnimator="@null"
             android:tint="@color/icon_secondary" />
 
+        <RadioGroup
+            android:id="@+id/modeGroup"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_mode_group"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <RadioButton
+                android:id="@+id/rbMic"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_mode_tab"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="@string/mode_microphone"
+                android:textAllCaps="false"
+                android:textColor="@color/mode_tab_text"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rbSpeaker"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_mode_tab"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/mode_speaker"
+                android:textAllCaps="false"
+                android:textColor="@color/mode_tab_text"
+                android:textSize="14sp" />
+        </RadioGroup>
+
         <TextView
             android:id="@+id/tvStatus"
             android:layout_width="match_parent"
@@ -72,6 +110,7 @@
             android:visibility="gone">
 
             <TextView
+                android:id="@+id/tvIpLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dest_ip"
@@ -89,6 +128,7 @@
                 android:maxLines="1" />
 
             <TextView
+                android:id="@+id/tvPortsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -122,6 +162,16 @@
                     android:inputType="number"
                     android:maxLines="1" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvSpeakerHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/speaker_fec_hint"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btnNotices"
