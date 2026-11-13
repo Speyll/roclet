@@ -7,29 +7,31 @@ IssueTracker: https://github.com/Speyll/Roclet/issues
 Changelog: https://github.com/Speyll/Roclet/blob/HEAD/CHANGELOG.md
 
 AutoName: Roclet
-Summary: Wireless microphone for a Roc Toolkit receiver
+Summary: Wireless microphone and speaker for Roc Toolkit
 Description: |-
   Roclet turns an Android phone into a wireless microphone for a Roc Toolkit
-  receiver. It captures the phone's microphone and streams it over the local
-  Wi-Fi network using Roc's reliable, low-latency audio transport, so a machine
-  running a ROC receiver (for example the PipeWire ROC module or roc-recv) can
-  receive it as an audio source.
+  receiver, or a wireless speaker for a Roc sender such as the PipeWire ROC
+  module. In Microphone mode it captures the phone's microphone and streams it
+  over the local Wi-Fi network using Roc's reliable, low-latency audio
+  transport. In Speaker mode it receives a stream from a PC and plays it through
+  the phone.
 
-  Audio is sent using Roc's standard rtp+rs8m (source) and rs8m (repair)
-  profiles. The destination IP address and ports are configurable and remembered
-  between launches. Streaming runs in a foreground service so it continues with
-  the screen off.
+  Audio uses Roc's standard rtp+rs8m (source) and rs8m (repair) profiles. In
+  Microphone mode the destination IP address and ports are configurable and
+  remembered between launches. Speaker mode listens on configurable local ports
+  and shows the phone's Wi-Fi address for the sender.
 
-  The app contains no analytics, advertising, or telemetry and stores only the
-  destination IP and port settings locally on the device.
+  Both modes run in a foreground service so they continue with the screen off.
+  The app contains no analytics, advertising, or telemetry and stores only
+  address and port settings locally on the device.
 
 RepoType: git
 Repo: https://github.com/Speyll/Roclet
 
 Builds:
-  - versionName: 0.1.1
-    versionCode: 2
-    commit: PLACEHOLDER_REPLACE_WITH_0.1.1_RELEASE_COMMIT
+  - versionName: 0.2.0
+    versionCode: 3
+    commit: PLACEHOLDER_REPLACE_WITH_0.2.0_RELEASE_COMMIT
     sudo:
       - apt-get update || apt-get update
       - apt-get install -y build-essential cmake ninja-build scons ragel
@@ -42,10 +44,9 @@ Builds:
     ndk: 21.1.6352462
 
 MaintainerNotes: |-
-  Builds.commit is a placeholder for the exact full v0.1.1 release commit.
+  Builds.commit is a placeholder for the exact full v0.2.0 release commit.
   Replace it with the tagged release commit before F-Droid submission. Roclet
-  0.1.1 supersedes 0.1.0 for F-Droid and contains the finalized third-party
-  notices and hold-removal changes.
+  0.2.0 adds PC-to-phone speaker playback and supersedes 0.1.1 for F-Droid.
 
   Native dependency: roc-android is built from source, not the upstream prebuilt
   AAR. scripts/native/build-native.sh uses the pinned sources under
@@ -68,5 +69,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: None
 UpdateCheckMode: Tags
-CurrentVersion: 0.1.1
-CurrentVersionCode: 2
+CurrentVersion: 0.2.0
+CurrentVersionCode: 3

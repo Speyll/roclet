@@ -1,15 +1,19 @@
-Roclet turns your Android phone into a wireless microphone for a Roc Toolkit receiver.
+Roclet turns your Android phone into a wireless microphone for a Roc Toolkit receiver, or a wireless speaker for a Roc sender on your PC.
 
-It captures the phone's microphone and streams it over your local Wi-Fi network using Roc's reliable, low-latency audio transport. A machine on the same network running a ROC receiver - for example the PipeWire or PulseAudio ROC module, or the roc-recv command-line tool - receives it as a normal audio source.
+In Microphone mode it captures the phone's microphone and streams it over your local Wi-Fi network using Roc's reliable, low-latency audio transport. A machine on the same network running a ROC receiver - for example the PipeWire or PulseAudio ROC module, or the roc-recv command-line tool - receives it as a normal audio source.
+
+In Speaker mode it does the opposite: it receives a Roc stream from a PC running a ROC sender, such as the PipeWire ROC sink module, and plays it through the phone's speaker or headphones.
 
 Features:
 * Stream the Android microphone to a ROC receiver over Wi-Fi.
+* Receive audio from a PC and play it on the phone.
 * Forward erasure correction (RS8M) with a separate repair stream for resilience on lossy Wi-Fi.
-* Configurable destination IP address and source/repair ports, remembered between launches.
-* Runs as a foreground service, so streaming continues with the screen off.
+* Configurable destination address or local listen ports, remembered per mode.
+* Shows the phone's Wi-Fi address in Speaker mode so the PC can target it.
+* Runs as a foreground service, so audio continues with the screen off.
 * Start and stop from the app or from the ongoing notification.
 * Light and dark themes.
 
-Roclet sends audio using Roc's standard rtp+rs8m (source) and rs8m (repair) profiles. The receiver must be reachable on the same network and listening on the configured ports (default source 10001, repair 10002).
+Roclet uses Roc's standard rtp+rs8m (source) and rs8m (repair) profiles. The other device must be reachable on the same network and use the configured ports (default source 10001, repair 10002). In Speaker mode the sender must use RS8M FEC.
 
-Audio is transmitted only to the destination you configure. The app contains no analytics, advertising, or telemetry, and stores only your destination IP and port settings locally on the device.
+Audio is exchanged only with the peer you configure. The app contains no analytics, advertising, or telemetry, and stores only address and port settings locally on the device.

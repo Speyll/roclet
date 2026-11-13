@@ -1,1 +1,1 @@
-Stream your phone's microphone to a ROC receiver over Wi-Fi.
+Wireless microphone and speaker for Roc Toolkit over Wi-Fi.

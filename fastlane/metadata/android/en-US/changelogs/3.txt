@@ -1,0 +1,5 @@
+Added Speaker mode.
+
+- Receive a Roc stream from a PC and play it through the phone.
+- Microphone mode is unchanged.
+- Speaker mode uses RS8M FEC and shows the phone's Wi-Fi address.

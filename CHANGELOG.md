@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0
+
+- Added Speaker mode: receive a Roc `rtp+rs8m` stream from a PC and play it
+  through the phone's speaker or headphones.
+- Speaker mode targets about 120 ms of latency, uses RS8M FEC, and shows the
+  phone's Wi-Fi address for the sender.
+- Added audio-focus handling: pauses on transient focus loss, ducks when
+  requested, and stops on permanent loss.
+- Microphone mode is unchanged.
+- Documented a PipeWire ROC sink setup for Linux senders.
+
 ## 0.1.1
 
 - Finalized third-party and OpenFEC licensing notices.
