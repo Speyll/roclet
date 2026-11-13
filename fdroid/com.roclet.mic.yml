@@ -31,7 +31,7 @@ Repo: https://github.com/Speyll/Roclet
 Builds:
   - versionName: 0.2.0
     versionCode: 3
-    commit: PLACEHOLDER_REPLACE_WITH_0.2.0_RELEASE_COMMIT
+    commit: fbc28be959368d7fd51fd07f165e37a3932a6372
     sudo:
       - apt-get update || apt-get update
       - apt-get install -y build-essential cmake ninja-build scons ragel
@@ -44,9 +44,9 @@ Builds:
     ndk: 21.1.6352462
 
 MaintainerNotes: |-
-  Builds.commit is a placeholder for the exact full v0.2.0 release commit.
-  Replace it with the tagged release commit before F-Droid submission. Roclet
-  0.2.0 adds PC-to-phone speaker playback and supersedes 0.1.1 for F-Droid.
+  Builds.commit pins the exact full v0.2.0 release commit,
+  fbc28be959368d7fd51fd07f165e37a3932a6372. Roclet 0.2.0 adds PC-to-phone
+  speaker playback and supersedes 0.1.1 for F-Droid.
 
   Native dependency: roc-android is built from source, not the upstream prebuilt
   AAR. scripts/native/build-native.sh uses the pinned sources under
